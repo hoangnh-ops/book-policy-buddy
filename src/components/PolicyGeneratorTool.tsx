@@ -10,11 +10,15 @@ interface FormData {
   businessName: string;
   industry: string;
   bookingAdvance: string;
+  changeNotice: string;
   cancellationWindow: string;
   lateCancelFee: string;
   noShowFee: string;
-  reschedulePolicy: string;
-  refundPolicy: string;
+  noShowDefinition: string;
+  depositPercent: string;
+  depositRefundable: string;
+  gracePeriod: string;
+  lateArrivalAction: string;
   contactEmail: string;
 }
 
@@ -29,29 +33,37 @@ const INDUSTRIES = [
   "Other",
 ];
 
-const RESCHEDULE_OPTIONS = [
-  "Allowed up to 24 hours before",
-  "Allowed up to 48 hours before",
-  "Allowed anytime before appointment",
-  "Not allowed",
+const NO_SHOW_DEFINITIONS = [
+  "Client does not arrive within the grace period or does not provide advance notice",
+  "Client does not arrive within 10 minutes of scheduled time",
+  "Client does not arrive or cancel before the appointment",
 ];
 
-const REFUND_OPTIONS = [
-  "Full refund if cancelled within policy window",
-  "Partial refund (50%) if cancelled within policy window",
-  "Credit toward future booking only",
-  "No refund",
+const DEPOSIT_REFUND_OPTIONS = [
+  "Fully refundable if cancelled within free cancellation window",
+  "Non-refundable",
+  "Applied as credit toward future booking",
+];
+
+const LATE_ARRIVAL_OPTIONS = [
+  "Service may be shortened, no price reduction",
+  "Appointment will be cancelled and treated as a no-show",
+  "Service will proceed as normal if within grace period",
 ];
 
 const initialForm: FormData = {
   businessName: "",
   industry: "",
   bookingAdvance: "",
+  changeNotice: "",
   cancellationWindow: "",
   lateCancelFee: "",
   noShowFee: "",
-  reschedulePolicy: RESCHEDULE_OPTIONS[0],
-  refundPolicy: REFUND_OPTIONS[0],
+  noShowDefinition: NO_SHOW_DEFINITIONS[0],
+  depositPercent: "",
+  depositRefundable: DEPOSIT_REFUND_OPTIONS[0],
+  gracePeriod: "",
+  lateArrivalAction: LATE_ARRIVAL_OPTIONS[0],
   contactEmail: "",
 };
 
@@ -103,6 +115,7 @@ const PolicyGeneratorTool = () => {
       if (!form.businessName.trim()) errs.businessName = "Business name is required";
       if (!form.industry) errs.industry = "Please select an industry";
       if (!form.bookingAdvance.trim()) errs.bookingAdvance = "Please specify minimum advance booking time";
+      if (!form.changeNotice.trim()) errs.changeNotice = "Please specify change notice period";
     }
     if (s === 2) {
       if (!form.cancellationWindow.trim() || isNaN(Number(form.cancellationWindow)))
@@ -113,6 +126,10 @@ const PolicyGeneratorTool = () => {
         errs.noShowFee = "Please enter a valid percentage";
     }
     if (s === 3) {
+      if (!form.depositPercent.trim() || isNaN(Number(form.depositPercent)))
+        errs.depositPercent = "Please enter a valid deposit percentage";
+      if (!form.gracePeriod.trim() || isNaN(Number(form.gracePeriod)))
+        errs.gracePeriod = "Please enter a valid number of minutes";
       if (!form.contactEmail.trim()) errs.contactEmail = "Contact email is required";
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contactEmail))
         errs.contactEmail = "Please enter a valid email address";
@@ -129,40 +146,34 @@ const PolicyGeneratorTool = () => {
 
   const generate = () => {
     if (!validateStep(3)) return;
-    const policy = `BOOKING & CANCELLATION POLICY
-${form.businessName}
+    const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    const noShowCharge = Number(form.noShowFee) === 100 ? "the full service price" : `${form.noShowFee}% of the service price`;
 
-Effective Date: ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+    const policy = `Booking & Cancellation Policy — ${form.businessName}
 
-1. BOOKING POLICY
-• Industry: ${form.industry}
-• Minimum advance booking: ${form.bookingAdvance}
-• All appointments must be booked at least ${form.bookingAdvance} in advance through our online booking system or by contacting us directly.
-• Appointments are confirmed upon receipt of booking confirmation via email.
+Booking Policy
+--------------
+All appointments must be made at least ${form.bookingAdvance} in advance. A minimum of ${form.changeNotice} notice is required for any changes to an existing appointment.
 
-2. CANCELLATION POLICY
-• Cancellation window: ${form.cancellationWindow} hours before your scheduled appointment.
-• Cancellations made within the required window will be processed according to our refund policy below.
-• Late cancellation fee: ${form.lateCancelFee}% of service cost will be charged for cancellations made less than ${form.cancellationWindow} hours before the appointment.
+Cancellation Policy
+-------------------
+Clients may cancel their appointment free of charge up to ${form.cancellationWindow} hours before the scheduled service. Cancellations made less than ${form.cancellationWindow} hours before the appointment will be subject to a late cancellation fee of ${form.lateCancelFee}% of the service price.
 
-3. NO-SHOW POLICY
-• Clients who fail to show up for their scheduled appointment without prior notice will be charged ${form.noShowFee}% of the service cost.
-• Repeated no-shows may result in the requirement of a deposit for future bookings.
+No-Show Policy
+--------------
+Clients who fail to arrive for their scheduled appointment without prior notice will be charged ${noShowCharge}. We define a no-show as a client who ${form.noShowDefinition.toLowerCase()}.
 
-4. RESCHEDULING POLICY
-• ${form.reschedulePolicy}.
-• Rescheduling is subject to availability. We recommend rescheduling as early as possible.
+Deposits & Prepayment
+---------------------
+A deposit of ${form.depositPercent}% of the service price is required at the time of booking to secure your appointment. Deposits are ${form.depositRefundable.toLowerCase()}. For late cancellations, the deposit may be applied toward the cancellation fee.
 
-5. REFUND POLICY
-• ${form.refundPolicy}.
-• Refunds, if applicable, will be processed within 5–10 business days.
+Late Arrival Policy
+-------------------
+We offer a ${form.gracePeriod}-minute grace period for late arrivals. If you arrive more than ${form.gracePeriod} minutes after your scheduled time, your ${form.lateArrivalAction.toLowerCase()}, and no reduction in price will be offered. Please contact us as soon as possible if you expect to be late.
 
-6. CONTACT US
-For questions about this policy, please contact us at: ${form.contactEmail}
+Last updated: ${today}
 
-This policy is designed to ensure fair scheduling for all clients and to respect the time of our service providers. We appreciate your understanding and cooperation.
-
-Generated by Booknatic — Book smarter.`;
+Generated with Booknatic — Smart Appointment Booking`;
 
     setGenerated(policy);
   };
@@ -256,10 +267,18 @@ Generated by Booknatic — Book smarter.`;
               <div>
                 <Label htmlFor="bookingAdvance">
                   Minimum advance booking time <span className="text-destructive">*</span>
-                  <InfoTip text="How far in advance must clients book? e.g. '2 hours', '1 day', '48 hours'" />
+                  <InfoTip text="How far in advance must clients book? e.g. '2 hours', '1 day'" />
                 </Label>
-                <Input id="bookingAdvance" placeholder="e.g. 24 hours" value={form.bookingAdvance} onChange={(e) => update("bookingAdvance", e.target.value)} className="mt-1" />
+                <Input id="bookingAdvance" placeholder="e.g. 2 hours" value={form.bookingAdvance} onChange={(e) => update("bookingAdvance", e.target.value)} className="mt-1" />
                 <FieldError field="bookingAdvance" />
+              </div>
+              <div>
+                <Label htmlFor="changeNotice">
+                  Notice required for changes <span className="text-destructive">*</span>
+                  <InfoTip text="Minimum notice period for clients to change an existing appointment. e.g. '4 hours', '24 hours'" />
+                </Label>
+                <Input id="changeNotice" placeholder="e.g. 4 hours" value={form.changeNotice} onChange={(e) => update("changeNotice", e.target.value)} className="mt-1" />
+                <FieldError field="changeNotice" />
               </div>
             </div>
           )}
@@ -269,37 +288,37 @@ Generated by Booknatic — Book smarter.`;
               <h3 className="text-lg font-semibold text-foreground">Step 2: Cancellation & No-Show Rules</h3>
               <div>
                 <Label htmlFor="cancellationWindow">
-                  Cancellation window (hours before appointment) <span className="text-destructive">*</span>
-                  <InfoTip text="The minimum number of hours before the appointment that a client can cancel without a fee." />
+                  Free cancellation window (hours) <span className="text-destructive">*</span>
+                  <InfoTip text="Hours before appointment that a client can cancel without a fee." />
                 </Label>
                 <Input id="cancellationWindow" type="number" min="1" placeholder="e.g. 24" value={form.cancellationWindow} onChange={(e) => update("cancellationWindow", e.target.value)} className="mt-1" />
                 <FieldError field="cancellationWindow" />
               </div>
               <div>
                 <Label htmlFor="lateCancelFee">
-                  Late cancellation fee (% of service cost) <span className="text-destructive">*</span>
-                  <InfoTip text="Percentage charged when a client cancels after the cancellation window." />
+                  Late cancellation fee (% of service price) <span className="text-destructive">*</span>
+                  <InfoTip text="Percentage charged for cancellations made after the free window." />
                 </Label>
                 <Input id="lateCancelFee" type="number" min="0" max="100" placeholder="e.g. 50" value={form.lateCancelFee} onChange={(e) => update("lateCancelFee", e.target.value)} className="mt-1" />
                 <FieldError field="lateCancelFee" />
               </div>
               <div>
                 <Label htmlFor="noShowFee">
-                  No-show fee (% of service cost) <span className="text-destructive">*</span>
-                  <InfoTip text="Percentage charged when a client doesn't show up without notice." />
+                  No-show fee (% of service price) <span className="text-destructive">*</span>
+                  <InfoTip text="Percentage charged when a client doesn't show up. 100% = full service price." />
                 </Label>
                 <Input id="noShowFee" type="number" min="0" max="100" placeholder="e.g. 100" value={form.noShowFee} onChange={(e) => update("noShowFee", e.target.value)} className="mt-1" />
                 <FieldError field="noShowFee" />
               </div>
               <div>
-                <Label htmlFor="reschedulePolicy">Rescheduling policy</Label>
+                <Label htmlFor="noShowDefinition">No-show definition</Label>
                 <select
-                  id="reschedulePolicy"
-                  value={form.reschedulePolicy}
-                  onChange={(e) => update("reschedulePolicy", e.target.value)}
+                  id="noShowDefinition"
+                  value={form.noShowDefinition}
+                  onChange={(e) => update("noShowDefinition", e.target.value)}
                   className="mt-1 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  {RESCHEDULE_OPTIONS.map((o) => (
+                  {NO_SHOW_DEFINITIONS.map((o) => (
                     <option key={o} value={o}>{o}</option>
                   ))}
                 </select>
@@ -309,16 +328,45 @@ Generated by Booknatic — Book smarter.`;
 
           {step === 3 && (
             <div className="space-y-5 animate-fade-in-up">
-              <h3 className="text-lg font-semibold text-foreground">Step 3: Refund & Contact</h3>
+              <h3 className="text-lg font-semibold text-foreground">Step 3: Deposits & Late Arrival</h3>
               <div>
-                <Label htmlFor="refundPolicy">Refund policy</Label>
+                <Label htmlFor="depositPercent">
+                  Deposit required (% of service price) <span className="text-destructive">*</span>
+                  <InfoTip text="Percentage of service price required as deposit to secure the booking." />
+                </Label>
+                <Input id="depositPercent" type="number" min="0" max="100" placeholder="e.g. 25" value={form.depositPercent} onChange={(e) => update("depositPercent", e.target.value)} className="mt-1" />
+                <FieldError field="depositPercent" />
+              </div>
+              <div>
+                <Label htmlFor="depositRefundable">Deposit refund policy</Label>
                 <select
-                  id="refundPolicy"
-                  value={form.refundPolicy}
-                  onChange={(e) => update("refundPolicy", e.target.value)}
+                  id="depositRefundable"
+                  value={form.depositRefundable}
+                  onChange={(e) => update("depositRefundable", e.target.value)}
                   className="mt-1 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  {REFUND_OPTIONS.map((o) => (
+                  {DEPOSIT_REFUND_OPTIONS.map((o) => (
+                    <option key={o} value={o}>{o}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="gracePeriod">
+                  Late arrival grace period (minutes) <span className="text-destructive">*</span>
+                  <InfoTip text="How many minutes after the scheduled time before a client is considered late." />
+                </Label>
+                <Input id="gracePeriod" type="number" min="0" max="60" placeholder="e.g. 15" value={form.gracePeriod} onChange={(e) => update("gracePeriod", e.target.value)} className="mt-1" />
+                <FieldError field="gracePeriod" />
+              </div>
+              <div>
+                <Label htmlFor="lateArrivalAction">Late arrival action</Label>
+                <select
+                  id="lateArrivalAction"
+                  value={form.lateArrivalAction}
+                  onChange={(e) => update("lateArrivalAction", e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  {LATE_ARRIVAL_OPTIONS.map((o) => (
                     <option key={o} value={o}>{o}</option>
                   ))}
                 </select>
