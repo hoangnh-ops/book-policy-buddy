@@ -6,6 +6,7 @@ import WhyUseSection from "@/components/WhyUseSection";
 import MetricsSection from "@/components/MetricsSection";
 import FAQSection from "@/components/FAQSection";
 import FooterSection from "@/components/FooterSection";
+import CrossSellSection from "@/components/CrossSellSection";
 
 const Index = () => (
   <div className="min-h-screen bg-background">
@@ -15,6 +16,7 @@ const Index = () => (
     <WhyAndWhatSection />
     <WhyUseSection />
     <MetricsSection />
+    <CrossSellSection />
     <FAQSection />
     <FooterSection />
   </div>
