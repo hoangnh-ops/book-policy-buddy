@@ -1,5 +1,6 @@
 import { ShieldCheck, CalendarCheck, TrendingUp, Gift, BellRing, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import booknaticLogo from "@/assets/booknatic-logo.png";
 
 const benefits = [
   { icon: ShieldCheck, text: "Enforce cancellation & booking rules automatically" },
@@ -162,7 +163,12 @@ const CrossSellSection = () => (
         </div>
 
         {/* Right — Widget mockup */}
-        <div className="flex justify-center lg:justify-end">
+        <div className="flex flex-col items-center lg:items-end gap-6">
+          {/* Booknatic logo */}
+          <div className="flex items-center gap-3">
+            <img src={booknaticLogo} alt="Booknatic" className="w-12 h-12 rounded-xl" />
+            <span className="text-primary-foreground font-extrabold text-2xl tracking-tight">Booknatic</span>
+          </div>
           <div className="relative">
             {/* Glow behind widget */}
             <div className="absolute -inset-8 bg-[hsl(var(--sky-blue))]/10 rounded-3xl blur-2xl" />
