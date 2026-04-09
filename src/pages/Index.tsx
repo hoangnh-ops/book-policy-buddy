@@ -1,6 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import PolicyGeneratorTool from "@/components/PolicyGeneratorTool";
 import HowToUseSection from "@/components/HowToUseSection";
+import WhyAndWhatSection from "@/components/WhyAndWhatSection";
 import WhyUseSection from "@/components/WhyUseSection";
 import MetricsSection from "@/components/MetricsSection";
 import FAQSection from "@/components/FAQSection";
@@ -11,6 +12,7 @@ const Index = () => (
     <HeroSection />
     <PolicyGeneratorTool />
     <HowToUseSection />
+    <WhyAndWhatSection />
     <WhyUseSection />
     <MetricsSection />
     <FAQSection />
