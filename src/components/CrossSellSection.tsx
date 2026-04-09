@@ -1,5 +1,6 @@
 import { ShieldCheck, CalendarCheck, TrendingUp, Gift, BellRing, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import booknaticLogo from "@/assets/booknatic-logo.png";
 
 const benefits = [
   { icon: ShieldCheck, text: "Enforce cancellation & booking rules automatically" },
