@@ -163,7 +163,7 @@ const CrossSellSection = () => (
         </div>
 
         {/* Right — Widget mockup */}
-        <div className="flex flex-col items-center lg:items-end gap-6">
+        <div className="flex flex-col items-center gap-6">
           {/* Booknatic logo */}
           <div className="flex items-center gap-3">
             <img src={booknaticLogo} alt="Booknatic" className="w-12 h-12 rounded-xl" />
