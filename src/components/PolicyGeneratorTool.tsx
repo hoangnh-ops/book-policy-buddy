@@ -303,8 +303,8 @@ Generated with Booknatic — Smart Appointment Booking`;
               }} className="gap-2">
                 <Copy className="w-4 h-4" /> Copy {previewTab === "text" ? "text" : "HTML"}
               </Button>
-              <Button variant="outline" onClick={() => downloadFile(htmlContent, `${safeName}_policy.html`, "text/html")} className="gap-2">
-                <Download className="w-4 h-4" /> Download HTML
+              <Button variant="outline" onClick={() => downloadFile(generated, `${safeName}_policy.txt`, "text/plain")} className="gap-2">
+                <Download className="w-4 h-4" /> Download .txt
               </Button>
               <Button variant="outline" onClick={resetForm} className="gap-2">
                 <FileText className="w-4 h-4" /> Generate another
