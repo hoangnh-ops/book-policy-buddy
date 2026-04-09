@@ -281,12 +281,6 @@ Generated with Booknatic — Smart Appointment Booking`;
                 >
                   <Code className="w-4 h-4" /> HTML
                 </button>
-                <button
-                  onClick={() => downloadFile(generated, `${safeName}_policy.txt`, "text/plain")}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border border-border bg-card text-foreground hover:bg-secondary transition-colors"
-                >
-                  <Download className="w-4 h-4" /> .txt
-                </button>
               </div>
             </div>
 
@@ -309,8 +303,8 @@ Generated with Booknatic — Smart Appointment Booking`;
               }} className="gap-2">
                 <Copy className="w-4 h-4" /> Copy {previewTab === "text" ? "text" : "HTML"}
               </Button>
-              <Button variant="outline" onClick={() => downloadFile(htmlContent, `${safeName}_policy.html`, "text/html")} className="gap-2">
-                <Download className="w-4 h-4" /> Download HTML
+              <Button variant="outline" onClick={() => downloadFile(generated, `${safeName}_policy.txt`, "text/plain")} className="gap-2">
+                <Download className="w-4 h-4" /> Download .txt
               </Button>
               <Button variant="outline" onClick={resetForm} className="gap-2">
                 <FileText className="w-4 h-4" /> Generate another
