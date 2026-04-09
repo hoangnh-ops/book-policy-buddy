@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Copy, Info, AlertCircle, ChevronRight, ChevronLeft, FileText } from "lucide-react";
+import { CheckCircle, Copy, Info, AlertCircle, ChevronRight, ChevronLeft, FileText, Download, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
