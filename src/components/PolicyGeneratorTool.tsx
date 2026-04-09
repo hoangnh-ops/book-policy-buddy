@@ -200,7 +200,52 @@ Generated with Booknatic — Smart Appointment Booking`;
       </p>
     ) : null;
 
+  const generateHTML = () => {
+    if (!generated) return "";
+    const lines = generated.split("\n");
+    const title = lines[0];
+    const sections = generated.split("\n\n").slice(1);
+    
+    let html = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>${form.businessName} - Booking Policy</title>\n  <style>\n    body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #1A3050; line-height: 1.7; }\n    h1 { color: #1060C0; border-bottom: 2px solid #B8D4F4; padding-bottom: 12px; }\n    h2 { color: #2070D0; margin-top: 28px; }\n    hr { border: none; border-top: 1px solid #B8D4F4; margin: 8px 0; }\n    .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #B8D4F4; color: #6B7280; font-size: 14px; }\n  </style>\n</head>\n<body>\n`;
+    
+    const sectionBlocks = generated.split("\n\n");
+    html += `<h1>${sectionBlocks[0]}</h1>\n`;
+    
+    for (let i = 1; i < sectionBlocks.length; i++) {
+      const block = sectionBlocks[i];
+      const blockLines = block.split("\n");
+      
+      if (blockLines.length >= 2 && /^-{3,}$/.test(blockLines[1]?.trim())) {
+        html += `<h2>${blockLines[0]}</h2>\n<hr>\n`;
+        const rest = blockLines.slice(2).join(" ");
+        if (rest.trim()) html += `<p>${rest}</p>\n`;
+      } else if (block.startsWith("Last updated:") || block.startsWith("Generated with")) {
+        html += `<div class="footer"><p>${block.replace("\n", "</p><p>")}</p></div>\n`;
+      } else {
+        html += `<p>${block.replace(/\n/g, "<br>")}</p>\n`;
+      }
+    }
+    
+    html += `</body>\n</html>`;
+    return html;
+  };
+
+  const downloadFile = (content: string, filename: string, mime: string) => {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const [previewTab, setPreviewTab] = useState<"text" | "html">("text");
+
   if (generated) {
+    const htmlContent = generateHTML();
+    const safeName = form.businessName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+
     return (
       <section id="generator" className="py-16">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -211,12 +256,61 @@ Generated with Booknatic — Smart Appointment Booking`;
               </div>
               <h2 className="text-2xl font-bold text-foreground">Your Policy is Ready!</h2>
             </div>
-            <pre className="bg-muted rounded-xl p-5 text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed border border-border overflow-auto max-h-[500px]">
-              {generated}
-            </pre>
+
+            {/* Tab bar */}
+            <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+              <span className="text-sm font-semibold text-foreground">Policy Preview</span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPreviewTab("text")}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+                    previewTab === "text"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card text-foreground border-border hover:bg-secondary"
+                  }`}
+                >
+                  <FileText className="w-4 h-4" /> Text
+                </button>
+                <button
+                  onClick={() => setPreviewTab("html")}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
+                    previewTab === "html"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card text-foreground border-border hover:bg-secondary"
+                  }`}
+                >
+                  <Code className="w-4 h-4" /> HTML
+                </button>
+                <button
+                  onClick={() => downloadFile(generated, `${safeName}_policy.txt`, "text/plain")}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium border border-border bg-card text-foreground hover:bg-secondary transition-colors"
+                >
+                  <Download className="w-4 h-4" /> .txt
+                </button>
+              </div>
+            </div>
+
+            {/* Preview content */}
+            {previewTab === "text" ? (
+              <pre className="bg-muted rounded-xl p-5 text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed border border-border overflow-auto max-h-[500px]">
+                {generated}
+              </pre>
+            ) : (
+              <pre className="bg-muted rounded-xl p-5 text-xs text-foreground whitespace-pre-wrap font-mono leading-relaxed border border-border overflow-auto max-h-[500px]">
+                {htmlContent}
+              </pre>
+            )}
+
             <div className="flex flex-wrap gap-3 mt-6">
-              <Button onClick={copyPolicy} className="gap-2">
-                <Copy className="w-4 h-4" /> Copy to clipboard
+              <Button onClick={() => {
+                const content = previewTab === "text" ? generated : htmlContent;
+                navigator.clipboard.writeText(content);
+                toast({ title: "Copied!", description: `${previewTab === "text" ? "Text" : "HTML"} policy copied to clipboard.` });
+              }} className="gap-2">
+                <Copy className="w-4 h-4" /> Copy {previewTab === "text" ? "text" : "HTML"}
+              </Button>
+              <Button variant="outline" onClick={() => downloadFile(htmlContent, `${safeName}_policy.html`, "text/html")} className="gap-2">
+                <Download className="w-4 h-4" /> Download HTML
               </Button>
               <Button variant="outline" onClick={resetForm} className="gap-2">
                 <FileText className="w-4 h-4" /> Generate another
