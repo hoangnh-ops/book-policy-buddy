@@ -437,10 +437,17 @@ Generated with Booknatic — Smart Appointment Booking`;
               <h3 className="text-lg font-semibold text-foreground">Step 2: Cancellation & No-Show Rules</h3>
               <div>
                 <Label htmlFor="cancellationWindow">
-                  Free cancellation window (hours) <span className="text-destructive">*</span>
-                  <InfoTip text="Hours before appointment that a client can cancel without a fee." />
+                  Free cancellation window <span className="text-destructive">*</span>
+                  <InfoTip text="Time before appointment that a client can cancel without a fee." />
                 </Label>
-                <Input id="cancellationWindow" type="number" min="1" placeholder="e.g. 24" value={form.cancellationWindow} onChange={(e) => update("cancellationWindow", e.target.value)} className="mt-1" />
+                <TimeInput
+                  id="cancellationWindow"
+                  value={form.cancellationWindow}
+                  unit={form.cancellationWindowUnit}
+                  onValueChange={(v) => update("cancellationWindow", v)}
+                  onUnitChange={(v) => update("cancellationWindowUnit", v)}
+                  placeholder="e.g. 24"
+                />
                 <FieldError field="cancellationWindow" />
               </div>
               <div>
