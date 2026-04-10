@@ -159,8 +159,10 @@ const PolicyGeneratorTool = () => {
     if (s === 1) {
       if (!form.businessName.trim()) errs.businessName = "Business name is required";
       if (!form.industry) errs.industry = "Please select an industry";
-      if (!form.bookingAdvance.trim()) errs.bookingAdvance = "Please specify minimum advance booking time";
-      if (!form.changeNotice.trim()) errs.changeNotice = "Please specify change notice period";
+      if (!form.bookingAdvance.trim() || isNaN(Number(form.bookingAdvance)))
+        errs.bookingAdvance = "Please enter a valid number";
+      if (!form.changeNotice.trim() || isNaN(Number(form.changeNotice)))
+        errs.changeNotice = "Please enter a valid number";
     }
     if (s === 2) {
       if (!form.cancellationWindow.trim() || isNaN(Number(form.cancellationWindow)))
