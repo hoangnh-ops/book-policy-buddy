@@ -200,11 +200,11 @@ const PolicyGeneratorTool = () => {
 
 Booking Policy
 --------------
-All appointments must be made at least ${form.bookingAdvance} in advance. A minimum of ${form.changeNotice} notice is required for any changes to an existing appointment.
+All appointments must be made at least ${form.bookingAdvance} ${form.bookingAdvanceUnit} in advance. A minimum of ${form.changeNotice} ${form.changeNoticeUnit} notice is required for any changes to an existing appointment.
 
 Cancellation Policy
 -------------------
-Clients may cancel their appointment free of charge up to ${form.cancellationWindow} hours before the scheduled service. Cancellations made less than ${form.cancellationWindow} hours before the appointment will be subject to a late cancellation fee of ${form.lateCancelFee}% of the service price.
+Clients may cancel their appointment free of charge up to ${form.cancellationWindow} ${form.cancellationWindowUnit} before the scheduled service. Cancellations made less than ${form.cancellationWindow} ${form.cancellationWindowUnit} before the appointment will be subject to a late cancellation fee of ${form.lateCancelFee}% of the service price.
 
 No-Show Policy
 --------------
