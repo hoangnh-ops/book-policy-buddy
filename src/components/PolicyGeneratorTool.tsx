@@ -228,7 +228,11 @@ A deposit of ${form.depositPercent}% of the service price is required at the tim
 
 Late Arrival Policy
 -------------------
-We offer a ${form.gracePeriod}-minute grace period for late arrivals. If you arrive more than ${form.gracePeriod} minutes after your scheduled time, your ${form.lateArrivalAction.toLowerCase()}, and no reduction in price will be offered. Please contact us as soon as possible if you expect to be late.
+We offer a ${form.gracePeriod}-minute grace period for late arrivals. If you arrive more than ${form.gracePeriod} minutes after your scheduled time, your ${form.lateArrivalAction.toLowerCase()}, and no reduction in price will be offered. Please contact us as soon as possible if you expect to be late.${INDUSTRY_CLAUSES[form.industry] ? `
+
+Additional Policy
+-----------------
+${INDUSTRY_CLAUSES[form.industry]}` : ""}
 
 Last updated: ${today}
 
