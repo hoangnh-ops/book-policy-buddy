@@ -84,6 +84,43 @@ const InfoTip = ({ text }: { text: string }) => (
   </Tooltip>
 );
 
+const TimeInput = ({
+  id,
+  value,
+  unit,
+  onValueChange,
+  onUnitChange,
+  placeholder,
+}: {
+  id: string;
+  value: string;
+  unit: string;
+  onValueChange: (v: string) => void;
+  onUnitChange: (v: string) => void;
+  placeholder: string;
+}) => (
+  <div className="flex gap-2 mt-1">
+    <Input
+      id={id}
+      type="number"
+      min="1"
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => onValueChange(e.target.value)}
+      className="flex-1"
+    />
+    <select
+      value={unit}
+      onChange={(e) => onUnitChange(e.target.value)}
+      className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring min-w-[90px]"
+    >
+      {TIME_UNITS.map((u) => (
+        <option key={u} value={u}>{u}</option>
+      ))}
+    </select>
+  </div>
+);
+
 const StepIndicator = ({ current, total }: { current: number; total: number }) => (
   <div className="flex items-center justify-center gap-2 mb-8">
     {Array.from({ length: total }, (_, i) => (
