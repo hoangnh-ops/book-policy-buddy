@@ -28,15 +28,27 @@ interface FormData {
 const TIME_UNITS = ["hours", "days"];
 
 const INDUSTRIES = [
-  "Hair Salon / Barbershop",
-  "Spa & Wellness",
-  "Medical / Dental Clinic",
-  "Fitness / Personal Training",
+  "Salon & Spa",
+  "Wellness & Fitness",
+  "Medical & Clinic",
+  "Tutoring & Coaching",
   "Photography",
-  "Consulting / Coaching",
-  "Home Services",
+  "Tours & Experiences",
+  "Tattoo Shop",
+  "Pet Grooming",
   "Other",
 ];
+
+const INDUSTRY_CLAUSES: Record<string, string> = {
+  "Salon & Spa": "Services such as hair color, keratin, or bridal appointments may require a higher deposit.",
+  "Wellness & Fitness": "Session packages and memberships are non-refundable once commenced.",
+  "Medical & Clinic": "Please arrive with any required documentation. Consultations cancelled without notice may forfeit the full fee.",
+  "Tutoring & Coaching": "Materials prepared specifically for your session may not be recoverable if cancelled late.",
+  "Photography": "Edited images will be delivered within the agreed timeframe. Cancellation after a shoot begins is non-refundable.",
+  "Tours & Experiences": "Outdoor experiences may be rescheduled free of charge due to weather conditions at our discretion.",
+  "Tattoo Shop": "Custom design artwork is prepared specifically for your appointment. A minimum 50% deposit is required. Sobriety is required at time of appointment.",
+  "Pet Grooming": "Please ensure your pet is up-to-date on vaccinations. We reserve the right to refuse service if health documentation cannot be provided.",
+};
 
 const NO_SHOW_DEFINITIONS = [
   "Client does not arrive within the grace period or does not provide advance notice",
@@ -216,7 +228,11 @@ A deposit of ${form.depositPercent}% of the service price is required at the tim
 
 Late Arrival Policy
 -------------------
-We offer a ${form.gracePeriod}-minute grace period for late arrivals. If you arrive more than ${form.gracePeriod} minutes after your scheduled time, your ${form.lateArrivalAction.toLowerCase()}, and no reduction in price will be offered. Please contact us as soon as possible if you expect to be late.
+We offer a ${form.gracePeriod}-minute grace period for late arrivals. If you arrive more than ${form.gracePeriod} minutes after your scheduled time, your ${form.lateArrivalAction.toLowerCase()}, and no reduction in price will be offered. Please contact us as soon as possible if you expect to be late.${INDUSTRY_CLAUSES[form.industry] ? `
+
+Additional Policy
+-----------------
+${INDUSTRY_CLAUSES[form.industry]}` : ""}
 
 Last updated: ${today}
 
