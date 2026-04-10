@@ -166,7 +166,7 @@ const PolicyGeneratorTool = () => {
     }
     if (s === 2) {
       if (!form.cancellationWindow.trim() || isNaN(Number(form.cancellationWindow)))
-        errs.cancellationWindow = "Please enter a valid number of hours";
+        errs.cancellationWindow = "Please enter a valid number";
       if (!form.lateCancelFee.trim() || isNaN(Number(form.lateCancelFee)))
         errs.lateCancelFee = "Please enter a valid percentage";
       if (!form.noShowFee.trim() || isNaN(Number(form.noShowFee)))
