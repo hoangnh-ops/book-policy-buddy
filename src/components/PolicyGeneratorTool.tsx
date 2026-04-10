@@ -28,15 +28,27 @@ interface FormData {
 const TIME_UNITS = ["hours", "days"];
 
 const INDUSTRIES = [
-  "Hair Salon / Barbershop",
-  "Spa & Wellness",
-  "Medical / Dental Clinic",
-  "Fitness / Personal Training",
+  "Salon & Spa",
+  "Wellness & Fitness",
+  "Medical & Clinic",
+  "Tutoring & Coaching",
   "Photography",
-  "Consulting / Coaching",
-  "Home Services",
+  "Tours & Experiences",
+  "Tattoo Shop",
+  "Pet Grooming",
   "Other",
 ];
+
+const INDUSTRY_CLAUSES: Record<string, string> = {
+  "Salon & Spa": "Services such as hair color, keratin, or bridal appointments may require a higher deposit.",
+  "Wellness & Fitness": "Session packages and memberships are non-refundable once commenced.",
+  "Medical & Clinic": "Please arrive with any required documentation. Consultations cancelled without notice may forfeit the full fee.",
+  "Tutoring & Coaching": "Materials prepared specifically for your session may not be recoverable if cancelled late.",
+  "Photography": "Edited images will be delivered within the agreed timeframe. Cancellation after a shoot begins is non-refundable.",
+  "Tours & Experiences": "Outdoor experiences may be rescheduled free of charge due to weather conditions at our discretion.",
+  "Tattoo Shop": "Custom design artwork is prepared specifically for your appointment. A minimum 50% deposit is required. Sobriety is required at time of appointment.",
+  "Pet Grooming": "Please ensure your pet is up-to-date on vaccinations. We reserve the right to refuse service if health documentation cannot be provided.",
+};
 
 const NO_SHOW_DEFINITIONS = [
   "Client does not arrive within the grace period or does not provide advance notice",
