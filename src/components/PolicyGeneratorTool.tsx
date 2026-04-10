@@ -402,17 +402,31 @@ Generated with Booknatic — Smart Appointment Booking`;
               <div>
                 <Label htmlFor="bookingAdvance">
                   Minimum advance booking time <span className="text-destructive">*</span>
-                  <InfoTip text="How far in advance must clients book? e.g. '2 hours', '1 day'" />
+                  <InfoTip text="How far in advance must clients book?" />
                 </Label>
-                <Input id="bookingAdvance" placeholder="e.g. 2 hours" value={form.bookingAdvance} onChange={(e) => update("bookingAdvance", e.target.value)} className="mt-1" />
+                <TimeInput
+                  id="bookingAdvance"
+                  value={form.bookingAdvance}
+                  unit={form.bookingAdvanceUnit}
+                  onValueChange={(v) => update("bookingAdvance", v)}
+                  onUnitChange={(v) => update("bookingAdvanceUnit", v)}
+                  placeholder="e.g. 2"
+                />
                 <FieldError field="bookingAdvance" />
               </div>
               <div>
                 <Label htmlFor="changeNotice">
                   Notice required for changes <span className="text-destructive">*</span>
-                  <InfoTip text="Minimum notice period for clients to change an existing appointment. e.g. '4 hours', '24 hours'" />
+                  <InfoTip text="Minimum notice period for clients to change an existing appointment." />
                 </Label>
-                <Input id="changeNotice" placeholder="e.g. 4 hours" value={form.changeNotice} onChange={(e) => update("changeNotice", e.target.value)} className="mt-1" />
+                <TimeInput
+                  id="changeNotice"
+                  value={form.changeNotice}
+                  unit={form.changeNoticeUnit}
+                  onValueChange={(v) => update("changeNotice", v)}
+                  onUnitChange={(v) => update("changeNoticeUnit", v)}
+                  placeholder="e.g. 4"
+                />
                 <FieldError field="changeNotice" />
               </div>
             </div>
