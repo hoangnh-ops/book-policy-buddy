@@ -10,8 +10,11 @@ interface FormData {
   businessName: string;
   industry: string;
   bookingAdvance: string;
+  bookingAdvanceUnit: string;
   changeNotice: string;
+  changeNoticeUnit: string;
   cancellationWindow: string;
+  cancellationWindowUnit: string;
   lateCancelFee: string;
   noShowFee: string;
   noShowDefinition: string;
@@ -21,6 +24,8 @@ interface FormData {
   lateArrivalAction: string;
   contactEmail: string;
 }
+
+const TIME_UNITS = ["hours", "days"];
 
 const INDUSTRIES = [
   "Hair Salon / Barbershop",
@@ -55,8 +60,11 @@ const initialForm: FormData = {
   businessName: "",
   industry: "",
   bookingAdvance: "",
+  bookingAdvanceUnit: "hours",
   changeNotice: "",
+  changeNoticeUnit: "hours",
   cancellationWindow: "",
+  cancellationWindowUnit: "hours",
   lateCancelFee: "",
   noShowFee: "",
   noShowDefinition: NO_SHOW_DEFINITIONS[0],
@@ -74,6 +82,43 @@ const InfoTip = ({ text }: { text: string }) => (
     </TooltipTrigger>
     <TooltipContent className="max-w-xs text-sm">{text}</TooltipContent>
   </Tooltip>
+);
+
+const TimeInput = ({
+  id,
+  value,
+  unit,
+  onValueChange,
+  onUnitChange,
+  placeholder,
+}: {
+  id: string;
+  value: string;
+  unit: string;
+  onValueChange: (v: string) => void;
+  onUnitChange: (v: string) => void;
+  placeholder: string;
+}) => (
+  <div className="flex gap-2 mt-1">
+    <Input
+      id={id}
+      type="number"
+      min="1"
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => onValueChange(e.target.value)}
+      className="flex-1"
+    />
+    <select
+      value={unit}
+      onChange={(e) => onUnitChange(e.target.value)}
+      className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring min-w-[90px]"
+    >
+      {TIME_UNITS.map((u) => (
+        <option key={u} value={u}>{u}</option>
+      ))}
+    </select>
+  </div>
 );
 
 const StepIndicator = ({ current, total }: { current: number; total: number }) => (
@@ -114,12 +159,14 @@ const PolicyGeneratorTool = () => {
     if (s === 1) {
       if (!form.businessName.trim()) errs.businessName = "Business name is required";
       if (!form.industry) errs.industry = "Please select an industry";
-      if (!form.bookingAdvance.trim()) errs.bookingAdvance = "Please specify minimum advance booking time";
-      if (!form.changeNotice.trim()) errs.changeNotice = "Please specify change notice period";
+      if (!form.bookingAdvance.trim() || isNaN(Number(form.bookingAdvance)))
+        errs.bookingAdvance = "Please enter a valid number";
+      if (!form.changeNotice.trim() || isNaN(Number(form.changeNotice)))
+        errs.changeNotice = "Please enter a valid number";
     }
     if (s === 2) {
       if (!form.cancellationWindow.trim() || isNaN(Number(form.cancellationWindow)))
-        errs.cancellationWindow = "Please enter a valid number of hours";
+        errs.cancellationWindow = "Please enter a valid number";
       if (!form.lateCancelFee.trim() || isNaN(Number(form.lateCancelFee)))
         errs.lateCancelFee = "Please enter a valid percentage";
       if (!form.noShowFee.trim() || isNaN(Number(form.noShowFee)))
@@ -153,11 +200,11 @@ const PolicyGeneratorTool = () => {
 
 Booking Policy
 --------------
-All appointments must be made at least ${form.bookingAdvance} in advance. A minimum of ${form.changeNotice} notice is required for any changes to an existing appointment.
+All appointments must be made at least ${form.bookingAdvance} ${form.bookingAdvanceUnit} in advance. A minimum of ${form.changeNotice} ${form.changeNoticeUnit} notice is required for any changes to an existing appointment.
 
 Cancellation Policy
 -------------------
-Clients may cancel their appointment free of charge up to ${form.cancellationWindow} hours before the scheduled service. Cancellations made less than ${form.cancellationWindow} hours before the appointment will be subject to a late cancellation fee of ${form.lateCancelFee}% of the service price.
+Clients may cancel their appointment free of charge up to ${form.cancellationWindow} ${form.cancellationWindowUnit} before the scheduled service. Cancellations made less than ${form.cancellationWindow} ${form.cancellationWindowUnit} before the appointment will be subject to a late cancellation fee of ${form.lateCancelFee}% of the service price.
 
 No-Show Policy
 --------------
@@ -355,17 +402,31 @@ Generated with Booknatic — Smart Appointment Booking`;
               <div>
                 <Label htmlFor="bookingAdvance">
                   Minimum advance booking time <span className="text-destructive">*</span>
-                  <InfoTip text="How far in advance must clients book? e.g. '2 hours', '1 day'" />
+                  <InfoTip text="How far in advance must clients book?" />
                 </Label>
-                <Input id="bookingAdvance" placeholder="e.g. 2 hours" value={form.bookingAdvance} onChange={(e) => update("bookingAdvance", e.target.value)} className="mt-1" />
+                <TimeInput
+                  id="bookingAdvance"
+                  value={form.bookingAdvance}
+                  unit={form.bookingAdvanceUnit}
+                  onValueChange={(v) => update("bookingAdvance", v)}
+                  onUnitChange={(v) => update("bookingAdvanceUnit", v)}
+                  placeholder="e.g. 2"
+                />
                 <FieldError field="bookingAdvance" />
               </div>
               <div>
                 <Label htmlFor="changeNotice">
                   Notice required for changes <span className="text-destructive">*</span>
-                  <InfoTip text="Minimum notice period for clients to change an existing appointment. e.g. '4 hours', '24 hours'" />
+                  <InfoTip text="Minimum notice period for clients to change an existing appointment." />
                 </Label>
-                <Input id="changeNotice" placeholder="e.g. 4 hours" value={form.changeNotice} onChange={(e) => update("changeNotice", e.target.value)} className="mt-1" />
+                <TimeInput
+                  id="changeNotice"
+                  value={form.changeNotice}
+                  unit={form.changeNoticeUnit}
+                  onValueChange={(v) => update("changeNotice", v)}
+                  onUnitChange={(v) => update("changeNoticeUnit", v)}
+                  placeholder="e.g. 4"
+                />
                 <FieldError field="changeNotice" />
               </div>
             </div>
@@ -376,10 +437,17 @@ Generated with Booknatic — Smart Appointment Booking`;
               <h3 className="text-lg font-semibold text-foreground">Step 2: Cancellation & No-Show Rules</h3>
               <div>
                 <Label htmlFor="cancellationWindow">
-                  Free cancellation window (hours) <span className="text-destructive">*</span>
-                  <InfoTip text="Hours before appointment that a client can cancel without a fee." />
+                  Free cancellation window <span className="text-destructive">*</span>
+                  <InfoTip text="Time before appointment that a client can cancel without a fee." />
                 </Label>
-                <Input id="cancellationWindow" type="number" min="1" placeholder="e.g. 24" value={form.cancellationWindow} onChange={(e) => update("cancellationWindow", e.target.value)} className="mt-1" />
+                <TimeInput
+                  id="cancellationWindow"
+                  value={form.cancellationWindow}
+                  unit={form.cancellationWindowUnit}
+                  onValueChange={(v) => update("cancellationWindow", v)}
+                  onUnitChange={(v) => update("cancellationWindowUnit", v)}
+                  placeholder="e.g. 24"
+                />
                 <FieldError field="cancellationWindow" />
               </div>
               <div>
