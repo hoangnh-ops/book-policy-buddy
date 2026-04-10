@@ -10,8 +10,11 @@ interface FormData {
   businessName: string;
   industry: string;
   bookingAdvance: string;
+  bookingAdvanceUnit: string;
   changeNotice: string;
+  changeNoticeUnit: string;
   cancellationWindow: string;
+  cancellationWindowUnit: string;
   lateCancelFee: string;
   noShowFee: string;
   noShowDefinition: string;
@@ -21,6 +24,8 @@ interface FormData {
   lateArrivalAction: string;
   contactEmail: string;
 }
+
+const TIME_UNITS = ["hours", "days"];
 
 const INDUSTRIES = [
   "Hair Salon / Barbershop",
