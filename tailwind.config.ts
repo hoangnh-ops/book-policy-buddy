@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Arial', '"Helvetica Neue"', 'sans-serif'],
+        sans: ['"DM Sans"', 'Arial', '"Helvetica Neue"', 'sans-serif'],
+        display: ['"Unbounded"', '"DM Sans"', 'Arial', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
