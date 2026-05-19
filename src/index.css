@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,49 +6,49 @@
 
 @layer base {
   :root {
-    --background: 213 60% 95%;
-    --foreground: 210 40% 16%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 16%;
+    --card-foreground: 0 0% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 16%;
+    --popover-foreground: 0 0% 4%;
 
-    --primary: 213 94% 59%;
+    --primary: 340 92% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 100% 94%;
-    --secondary-foreground: 213 94% 59%;
+    --secondary: 340 100% 96%;
+    --secondary-foreground: 340 92% 45%;
 
-    --muted: 213 60% 95%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 200 90% 63%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 44 100% 64%;
+    --accent-foreground: 0 0% 4%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 155 88% 36%;
+    --success: 146 64% 43%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    --border: 213 55% 84%;
-    --input: 213 55% 84%;
-    --ring: 213 94% 59%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 340 92% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --deep-blue: 213 85% 41%;
-    --mid-blue: 213 73% 47%;
-    --sky-blue: 200 90% 63%;
-    --navy: 213 100% 28%;
-    --ice-blue: 213 100% 95%;
+    --deep-blue: 0 0% 4%;
+    --mid-blue: 340 92% 55%;
+    --sky-blue: 44 100% 64%;
+    --navy: 0 0% 0%;
+    --ice-blue: 340 100% 97%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(213, 85%, 41%), hsl(213, 94%, 59%));
+    --gradient-hero: linear-gradient(135deg, hsl(340, 92%, 55%), hsl(340, 95%, 65%));
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -98,11 +98,12 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    font-family: 'Plus Jakarta Sans', Arial, 'Helvetica Neue', sans-serif;
+    font-family: 'DM Sans', Arial, 'Helvetica Neue', sans-serif;
     line-height: 1.65;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', Arial, 'Helvetica Neue', sans-serif;
+    font-family: 'Unbounded', 'DM Sans', Arial, sans-serif;
+    letter-spacing: -0.01em;
   }
 }
