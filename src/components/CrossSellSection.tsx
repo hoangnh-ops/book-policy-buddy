@@ -154,7 +154,7 @@ const CrossSellSection = () => (
           <Button
             size="lg"
             className="bg-[hsl(var(--sky-blue))] hover:bg-[hsl(var(--sky-blue))]/90 text-[hsl(var(--navy))] font-bold text-base rounded-xl px-8 h-12 shadow-lg shadow-[hsl(var(--sky-blue))]/20"
-            onClick={() => window.open("https://booknatic.app", "_blank")}
+            onClick={() => window.open("https://apps.shopify.com/dingdoong-rental-appointment?utm_campaign=website&utm_source=dingdoongweb&utm_medium=bookingpolicy", "_blank")}
           >
             Install Booknatic
             <ChevronRight className="w-4 h-4 ml-1" />
